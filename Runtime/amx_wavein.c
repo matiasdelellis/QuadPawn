@@ -275,7 +275,6 @@ int amxinit_wavein(AMX *amx)
         {"config_chB", amx_config_chB},
         {"getconfig_chA", amx_getconfig_chA},
         {"getconfig_chB", amx_getconfig_chB},
-        {"wavein_samplerate", amx_wavein_samplerate},
         {"wavein_settrigger", amx_wavein_settrigger},
         {"wavein_start", amx_wavein_start},
         {"wavein_istriggered", amx_wavein_istriggered},

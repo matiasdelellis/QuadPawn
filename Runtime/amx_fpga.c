@@ -3,6 +3,8 @@
 #include <stm32f10x.h>
 #include <amx.h>
 #include <stdint.h>
+#include "BIOS.h"
+#include "mathutils.h"
 #include "fpga.h"
 
 #define PINS_COUNT 10
@@ -149,6 +151,22 @@ static cell AMX_NATIVE_CALL amx_fpga_write(AMX *amx, const cell *params)
     return 0;
 }
 
+static cell AMX_NATIVE_CALL amx_fpga_set_frequency(AMX *amx, const cell *params)
+{
+    // fpga_set_frequency(frequency);
+    int freq = params[1];
+    int prescale = (CPUFREQ / 65536) / freq; // Prescale is used only for <1000Hz
+    int arr = div_round_up(CPUFREQ / (prescale + 1), freq) - 1;
+    
+    if (arr < 0) arr = 0;
+    
+    __Set(T_BASE_PSC, prescale);
+    __Set(T_BASE_ARR, arr);
+    
+    return div_round(CPUFREQ / (prescale + 1), arr + 1);
+}
+
+
 int amxinit_fpga(AMX *amx)
 {
     static const AMX_NATIVE_INFO funcs[] = {
@@ -158,6 +176,7 @@ int amxinit_fpga(AMX *amx)
         {"fpga_write_pins", amx_fpga_write_pins},
         {"fpga_read", amx_fpga_read},
         {"fpga_write", amx_fpga_write},
+        {"fpga_set_frequency", amx_fpga_set_frequency},
         {0, 0}
     };
     

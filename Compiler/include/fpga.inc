@@ -40,6 +40,12 @@ native fpgapin: fpga_read_pins(fpgapin: mask = ALL_PINS);
 /// other pins will keep their old values.
 native fpga_write_pins(fpgapin: states, fpgapin: mask = ALL_PINS);
 
+/// Set the fpga frequency, in Hz.
+/// This tries to achieve a frecuency as close as possible to the given frecuency.
+/// It returns the actual frecuency, which is always less or equal to the
+/// requested frecuency.
+native fpga_set_frequency(frequency);
+
 /// Set a single pin
 stock fpga_set_pin(fpgapin: pin)
 {

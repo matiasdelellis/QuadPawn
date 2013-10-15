@@ -1,3 +1,5 @@
+#include <fpga>
+
 /** Functions for reading input signals from the ADC / digital inputs. */
 
 const ADCCoupling: {
@@ -61,7 +63,10 @@ native getconfig_chB(&ADCCoupling: coupling, &ADCRange: range, &offset);
 /// This tries to achieve a sample rate as close as possible to the given rate.
 /// It returns the actual samplerate, which is always less or equal to the
 /// requested samplerate.
-native wavein_samplerate(frequency);
+stock wavein_samplerate(frequency)
+{
+	fpga_set_frequency (frequency);
+}
 
 /// Set the trigger mode
 /// mode: Select the trigger event type
